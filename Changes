@@ -1,3 +1,8 @@
+0.02    2010-11-22
+
+- This module loaded Test::ConsistentVersion, which it wasn't actually using.
+
+
 0.01    2010-11-22
 
 - Initial release
