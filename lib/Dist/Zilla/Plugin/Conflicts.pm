@@ -5,7 +5,6 @@ use warnings;
 
 use Dist::CheckConflicts 0.01 ();
 use Moose::Autobox 0.09;
-use Test::ConsistentVersion;
 
 use Moose;
 
