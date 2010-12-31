@@ -1,3 +1,9 @@
+0.03    2010-12-31
+
+- Added support for a -script config key, which tells this plugin to generate
+  a script of the given name that lists conflicts.
+
+
 0.02    2010-11-22
 
 - This module loaded Test::ConsistentVersion, which it wasn't actually using.
