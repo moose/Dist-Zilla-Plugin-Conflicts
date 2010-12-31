@@ -22,6 +22,12 @@ has _conflicts => (
     default => sub { {} },
 );
 
+has _script => (
+    is        => 'ro',
+    isa       => 'Str',
+    predicate => '_has_script',
+);
+
 has _conflicts_module_name => (
     is       => 'ro',
     isa      => 'Str',
@@ -44,10 +50,12 @@ sub BUILDARGS {
 
     my $zilla = delete $args{zilla};
     my $name  = delete $args{plugin_name};
+    my $bin   = delete $args{'-script'};
 
     return {
         zilla       => $zilla,
         plugin_name => $name,
+        _script     => $bin,
         _conflicts  => \%args,
     };
 }
@@ -77,6 +85,14 @@ sub register_prereqs {
     );
 }
 
+sub gather_files {
+    my $self = shift;
+    $self->add_file($self->_build_conflicts_file);
+    $self->add_file($self->_build_script)
+        if $self->_has_script;
+    return;
+}
+
 my $conflicts_module_template = <<'EOF';
 package # hide from PAUSE
     {{ $module_name }};
@@ -94,7 +110,7 @@ use Dist::CheckConflicts
 1;
 EOF
 
-sub gather_files {
+sub _build_conflicts_file {
     my $self = shift;
 
     my $conflicts = $self->_conflicts();
@@ -112,13 +128,50 @@ sub gather_files {
         },
     );
 
-    my $file = Dist::Zilla::File::InMemory->new(
+    return Dist::Zilla::File::InMemory->new(
         name    => $self->_conflicts_module_path(),
         content => $content,
     );
+}
 
-    $self->add_file($file);
-    return;
+my $script_template = <<'EOF';
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+# PODNAME: {{ $filename }}
+
+use Getopt::Long;
+use {{ $module_name }};
+
+my $verbose;
+GetOptions( 'verbose|v' => \$verbose );
+
+if ($verbose) {
+    {{ $module_name }}->check_conflicts;
+}
+else {
+    my @conflicts = {{ $module_name }}->calculate_conflicts;
+    print "$_\n" for map { $_->{package} } @conflicts;
+    exit @conflicts;
+}
+EOF
+
+sub _build_script {
+    my $self = shift;
+
+    ( my $filename = $self->_script() ) =~ s+^.*/++;
+    my $content = $self->fill_in_string(
+        $script_template, {
+            filename    => \$filename,
+            module_name => \( $self->_conflicts_module_name() ),
+        },
+    );
+
+    return Dist::Zilla::File::InMemory->new(
+        name    => $self->_script(),
+        content => $content,
+    );
 }
 
 # XXX - this should really be a separate phase that runs after InstallTool
@@ -259,6 +312,18 @@ you conflict with:
 
 The version listed is the last version that I<doesn't> work. In other words,
 any version of C<Module::X> greater than 0.02 should work with this release.
+
+The special key C<-script> can also be set, and given the name of a script to
+generate, as in:
+
+  [Conflicts]
+  -script   = bin/foo-conflicts
+  Module::X = 0.02
+
+This script will be installed with your module, and can be run to check for
+currently installed modules which conflict with your module. This allows users
+an easy way to fix their conflicts - simply run a command such as
+C<foo-conflicts | cpanm> to bring all of your conflicting modules up to date.
 
 B<Note:> Currently, this plugin only works properly if it is listed in your
 F<dist.ini> I<after> the plugin which generates your F<Makefile.PL> or
