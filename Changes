@@ -1,3 +1,9 @@
+0.04    2010-12-31
+
+- In the generated conflict module, all of the distro's runtime prereqs are
+  passed in the -also parameter to Dist::CheckConflicts.
+
+
 0.03    2010-12-31
 
 - Added support for a -script config key, which tells this plugin to generate
