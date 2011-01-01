@@ -9,7 +9,6 @@ use Moose::Autobox 0.09;
 use Moose;
 
 with qw(
-    Dist::Zilla::Role::FileGatherer
     Dist::Zilla::Role::InstallTool
     Dist::Zilla::Role::MetaProvider
     Dist::Zilla::Role::PrereqSource
@@ -85,13 +84,19 @@ sub register_prereqs {
     );
 }
 
-sub gather_files {
+# This should be done in the file gatherer stage, but that happens _before_
+# prereqs are registered, and we can't generate our conflict module until
+# after we know all the prereqs.
+after register_prereqs => sub {
     my $self = shift;
-    $self->add_file($self->_build_conflicts_file);
-    $self->add_file($self->_build_script)
-        if $self->_has_script;
+
+    $self->add_file( $self->_build_conflicts_file() );
+
+    $self->add_file( $self->_build_script() )
+        if $self->_has_script();
+
     return;
-}
+};
 
 my $conflicts_module_template = <<'EOF';
 package # hide from PAUSE
@@ -105,6 +110,9 @@ use Dist::CheckConflicts
     -conflicts => {
         {{ $conflicts_dump }},
     },
+    -also => [ qw(
+        {{ $also_dump }}
+    ) ],
 ;
 
 1;
@@ -118,6 +126,11 @@ sub _build_conflicts_file {
     my $conflicts_dump = join ",\n        ",
         map {qq['$_' => '$conflicts->{$_}']} sort keys %{$conflicts};
 
+    my $also_dump = join "\n        ",
+        sort grep { $_ ne 'perl' }
+        map { $_->required_modules() }
+        $self->zilla()->prereqs()->requirements_for(qw(runtime requires));
+
     ( my $dist_name = $self->zilla()->name() ) =~ s/-/::/g;
 
     my $content = $self->fill_in_string(
@@ -125,6 +138,7 @@ sub _build_conflicts_file {
             dist_name      => \$dist_name,
             module_name    => \( $self->_conflicts_module_name() ),
             conflicts_dump => \$conflicts_dump,
+            also_dump      => \$also_dump,
         },
     );
 
@@ -295,6 +309,9 @@ First, it generates a module named something like
 C<Your::Distro::Conflicts>. This module will use L<Dist::CheckConflicts> to
 declare and check conflicts. The package name will be obscured from PAUSE by
 putting a newline after the C<package> keyword.
+
+All of your runtime prereqs will be passed in the C<-also> parameter to
+L<Dist::CheckConflicts>.
 
 Second, it adds code to your F<Makefile.PL> or F<Build.PL> to load the
 generated module and print warnings if conflicts are detected.
