@@ -110,9 +110,7 @@ use Dist::CheckConflicts
     -conflicts => {
         {{ $conflicts_dump }},
     },
-    -also => [ qw(
-        {{ $also_dump }}
-    ) ],
+{{ $also_dump }}
 ;
 
 1;
@@ -130,6 +128,13 @@ sub _build_conflicts_file {
         sort grep { $_ ne 'perl' }
         map { $_->required_modules() }
         $self->zilla()->prereqs()->requirements_for(qw(runtime requires));
+
+    $also_dump
+        = '    -also => [ qw(' . "\n"
+        . '        '
+        . $also_dump . "\n"
+        . '    ) ],' . "\n"
+        if length $also_dump;
 
     ( my $dist_name = $self->zilla()->name() ) =~ s/-/::/g;
 
@@ -247,10 +252,7 @@ sub check_conflicts {
     else {
         print <<'EOF';
 ***
-    Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
-    hasn't been installed yet. You should check for conflicting modules
-    manually using the 'package-stash-conflicts' script that is installed with
-    this distribution once the installation finishes.
+{{ $warning }}
 ***
 EOF
     }
@@ -266,10 +268,33 @@ CC_SUB
 sub _check_conflicts_sub {
     my $self = shift;
 
+    my $warning;
+    if ( $self->_has_script() ) {
+        ( my $filename = $self->_script() ) =~ s+^.*/++;
+        $warning = <<"EOF";
+    Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
+    hasn't been installed yet. You should check for conflicting modules
+    manually using the '$filename' script that is installed with
+    this distribution once the installation finishes.
+EOG
+    }
+    else {
+        my $mod = $self->_conflicts_module_name();
+        $warning = <<"EOF";
+    Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
+    hasn't been installed yet. You should check for conflicting modules
+    manually by examining the list of conflicts in $mod once the installation
+    finishes.
+EOF
+    }
+
+    chomp $warning;
+
     return $self->fill_in_string(
         $check_conflicts_template, {
             conflicts_module_path => \( $self->_conflicts_module_path() ),
             conflicts_module_name => \( $self->_conflicts_module_name() ),
+            warning               => \$warning,
         },
     );
 }
