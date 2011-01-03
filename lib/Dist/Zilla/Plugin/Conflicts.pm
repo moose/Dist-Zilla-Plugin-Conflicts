@@ -276,7 +276,7 @@ sub _check_conflicts_sub {
     hasn't been installed yet. You should check for conflicting modules
     manually using the '$filename' script that is installed with
     this distribution once the installation finishes.
-EOG
+EOF
     }
     else {
         my $mod = $self->_conflicts_module_name();
