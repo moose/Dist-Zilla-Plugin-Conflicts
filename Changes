@@ -18,7 +18,7 @@
 0.03    2010-12-31
 
 - Added support for a -script config key, which tells this plugin to generate
-  a script of the given name that lists conflicts.
+  a script of the given name that lists conflicts. (Jesse Luehrs)
 
 
 0.02    2010-11-22
