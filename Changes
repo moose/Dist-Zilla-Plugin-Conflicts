@@ -1,3 +1,14 @@
+0.05    2010-01-03
+
+- The conflict warning added to your Makefile.PL or Build.PL now mentions the
+  generated script if you ask for one to be generated.
+
+- No -also will be passed to Dist::CheckConflicts if you don't have
+  dependencies.
+
+- Require Dist::CheckConflicts 0.02, which has better -also handling.
+
+
 0.04    2010-12-31
 
 - In the generated conflict module, all of the distro's runtime prereqs are
