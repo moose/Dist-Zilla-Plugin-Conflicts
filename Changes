@@ -1,10 +1,10 @@
 0.05    2010-01-03
 
 - The conflict warning added to your Makefile.PL or Build.PL now mentions the
-  generated script if you ask for one to be generated.
+  generated script if you ask for one to be generated. (Jesse Luehrs)
 
 - No -also will be passed to Dist::CheckConflicts if you don't have
-  dependencies.
+  dependencies. (Jesse Luehrs)
 
 - Require Dist::CheckConflicts 0.02, which has better -also handling.
 
