@@ -1,4 +1,10 @@
-0.05    2010-01-03
+0.06    2011-01-16
+
+- The dist.ini wouldn't load if a -script wasn't defined in the Conflicts
+  config section.
+
+
+0.05    2011-01-03
 
 - The conflict warning added to your Makefile.PL or Build.PL now mentions the
   generated script if you ask for one to be generated. (Jesse Luehrs)
