@@ -54,8 +54,8 @@ sub BUILDARGS {
     return {
         zilla       => $zilla,
         plugin_name => $name,
-        _script     => $bin,
-        _conflicts  => \%args,
+        ( defined $bin ? ( _script => $bin ) : () ),
+        _conflicts => \%args,
     };
 }
 
