@@ -1,3 +1,11 @@
+0.07    2011-01-25
+
+- Fix module name in pod.
+
+- Add a dep on Dist::CheckConflicts 0.02 to modules which use this plugin (not
+  0.01).
+
+
 0.06    2011-01-16
 
 - The dist.ini wouldn't load if a -script wasn't defined in the Conflicts
