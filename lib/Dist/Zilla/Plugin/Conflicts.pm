@@ -80,7 +80,7 @@ sub register_prereqs {
 
     $self->zilla->register_prereqs(
         { phase => 'configure' },
-        'Dist::CheckConflicts' => '0.01',
+        'Dist::CheckConflicts' => '0.02',
     );
 }
 
