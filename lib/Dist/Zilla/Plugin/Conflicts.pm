@@ -153,12 +153,15 @@ sub _build_conflicts_file {
     );
 }
 
+# If dzil sees this string PODXXXX anywhere in this code it uses that as the
+# name for the module.
+my $podname_hack = 'POD' . 'NAME';
 my $script_template = <<'EOF';
 #!/usr/bin/perl
 
 use strict;
 use warnings;
-# PODNAME: {{ $filename }}
+# %s: {{ $filename }}
 
 use Getopt::Long;
 use {{ $module_name }};
@@ -175,6 +178,7 @@ else {
     exit @conflicts;
 }
 EOF
+$script_template = sprintf( $script_template, $podname_hack );
 
 sub _build_script {
     my $self = shift;
