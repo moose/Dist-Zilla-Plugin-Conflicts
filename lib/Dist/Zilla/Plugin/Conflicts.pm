@@ -82,6 +82,11 @@ sub register_prereqs {
         { phase => 'configure' },
         'Dist::CheckConflicts' => '0.02',
     );
+
+    $self->zilla->register_prereqs(
+        { phase => 'runtime' },
+        'Dist::CheckConflicts' => '0.02',
+    );
 }
 
 # This should be done in the file gatherer stage, but that happens _before_

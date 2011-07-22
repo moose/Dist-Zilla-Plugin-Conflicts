@@ -1,3 +1,9 @@
+{{$NEXT}}
+
+- Add Dist::CheckConflicts to both configures and runtime dependency lists for
+  modules which use this plugin.
+
+
 0.07    2011-01-27
 
 - Fix module name in pod.
