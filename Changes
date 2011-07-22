@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.08    2011-07-22
+
 - Add Dist::CheckConflicts to both configures and runtime dependency lists for
   modules which use this plugin.
 
