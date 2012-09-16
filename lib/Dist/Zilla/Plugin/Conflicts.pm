@@ -127,10 +127,9 @@ sub _build_conflicts_file {
     my $conflicts = $self->_conflicts();
 
     my $conflicts_dump = join ",\n        ",
-        map {qq['$_' => '$conflicts->{$_}']} sort keys %{$conflicts};
+        map { qq['$_' => '$conflicts->{$_}'] } sort keys %{$conflicts};
 
-    my $also_dump = join "\n        ",
-        sort grep { $_ ne 'perl' }
+    my $also_dump = join "\n        ", sort grep { $_ ne 'perl' }
         map { $_->required_modules() }
         $self->zilla()->prereqs()->requirements_for(qw(runtime requires));
 
@@ -144,7 +143,8 @@ sub _build_conflicts_file {
     ( my $dist_name = $self->zilla()->name() ) =~ s/-/::/g;
 
     my $content = $self->fill_in_string(
-        $conflicts_module_template, {
+        $conflicts_module_template,
+        {
             dist_name      => \$dist_name,
             module_name    => \( $self->_conflicts_module_name() ),
             conflicts_dump => \$conflicts_dump,
@@ -160,7 +160,7 @@ sub _build_conflicts_file {
 
 # If dzil sees this string PODXXXX anywhere in this code it uses that as the
 # name for the module.
-my $podname_hack = 'POD' . 'NAME';
+my $podname_hack    = 'POD' . 'NAME';
 my $script_template = <<'EOF';
 #!/usr/bin/perl
 
@@ -190,7 +190,8 @@ sub _build_script {
 
     ( my $filename = $self->_script() ) =~ s+^.*/++;
     my $content = $self->fill_in_string(
-        $script_template, {
+        $script_template,
+        {
             filename    => \$filename,
             module_name => \( $self->_conflicts_module_name() ),
         },
@@ -216,10 +217,10 @@ sub setup_installer {
     }
 
     return;
-};
+}
 
 sub _munge_makefile_pl {
-    my $self = shift;
+    my $self     = shift;
     my $makefile = shift;
 
     my $content = $makefile->content();
@@ -233,7 +234,7 @@ sub _munge_makefile_pl {
 }
 
 sub _munge_build_pl {
-    my $self = shift;
+    my $self  = shift;
     my $build = shift;
 
     my $content = $build->content();
@@ -300,7 +301,8 @@ EOF
     chomp $warning;
 
     return $self->fill_in_string(
-        $check_conflicts_template, {
+        $check_conflicts_template,
+        {
             conflicts_module_path => \( $self->_conflicts_module_path() ),
             conflicts_module_name => \( $self->_conflicts_module_name() ),
             warning               => \$warning,
