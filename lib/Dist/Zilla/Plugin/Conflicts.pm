@@ -203,19 +203,25 @@ sub _build_script {
     );
 }
 
-# XXX - this should really be a separate phase that runs after InstallTool
+# XXX - this should really be a separate phase that runs after InstallTool -
+# until then, all we can do is die if we are run too soon
 sub setup_installer {
     my $self = shift;
 
+    my $found_installer;
     for my $file ( $self->zilla()->files()->flatten() ) {
         if ( $file->name() =~ /Makefile\.PL$/ ) {
             $self->_munge_makefile_pl($file);
+            $found_installer++;
         }
         elsif ( $file->name() =~ /Build\.PL$/ ) {
             $self->_munge_build_pl($file);
+            $found_installer++;
         }
     }
 
+    $self->log_fatal('No Makefile.PL or Build.PL was found. [Conflicts] should appear in dist.ini after [MakeMaker] or [ModuleBuild]!')
+        if not $found_installer;
     return;
 }
 
