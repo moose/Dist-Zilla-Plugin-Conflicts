@@ -4,11 +4,13 @@ use strict;
 use warnings;
 
 use Dist::CheckConflicts 0.01 ();
+use Dist::Zilla::File::InMemory;
 use Moose::Autobox 0.09;
 
 use Moose;
 
 with qw(
+    Dist::Zilla::Role::FileGatherer
     Dist::Zilla::Role::InstallTool
     Dist::Zilla::Role::MetaProvider
     Dist::Zilla::Role::PrereqSource
@@ -89,21 +91,30 @@ sub register_prereqs {
     );
 }
 
-# This should be done in the file gatherer stage, but that happens _before_
-# prereqs are registered, and we can't generate our conflict module until
-# after we know all the prereqs.
-after register_prereqs => sub {
+sub gather_files {
     my $self = shift;
 
-    $self->add_file( $self->_build_conflicts_file() );
+    $self->add_file(
+        Dist::Zilla::File::InMemory->new(
+            name    => $self->_conflicts_module_path(),
+            content => $self->_generate_conflicts_module(),
+        )
+    );
 
-    $self->add_file( $self->_build_script() )
-        if $self->_has_script();
+    if ( $self->_has_script() ) {
+        $self->add_file(
+            Dist::Zilla::File::InMemory->new(
+                name    => $self->_script(),
+                content => $self->_generate_conflicts_script(),
+            )
+        );
+    }
 
     return;
-};
+}
 
-my $conflicts_module_template = <<'EOF';
+{
+    my $conflicts_module_template = <<'EOF';
 package # hide from PAUSE
     {{ $module_name }};
 
@@ -121,47 +132,44 @@ use Dist::CheckConflicts
 1;
 EOF
 
-sub _build_conflicts_file {
-    my $self = shift;
+    sub _generate_conflicts_module {
+        my $self = shift;
 
-    my $conflicts = $self->_conflicts();
+        my $conflicts = $self->_conflicts();
 
-    my $conflicts_dump = join ",\n        ",
-        map { qq['$_' => '$conflicts->{$_}'] } sort keys %{$conflicts};
+        my $conflicts_dump = join ",\n        ",
+            map { qq['$_' => '$conflicts->{$_}'] } sort keys %{$conflicts};
 
-    my $also_dump = join "\n        ", sort grep { $_ ne 'perl' }
-        map { $_->required_modules() }
-        $self->zilla()->prereqs()->requirements_for(qw(runtime requires));
+        my $also_dump = join "\n        ", sort grep { $_ ne 'perl' }
+            map { $_->required_modules() }
+            $self->zilla()->prereqs()->requirements_for(qw(runtime requires));
 
-    $also_dump
-        = '    -also => [ qw(' . "\n"
-        . '        '
-        . $also_dump . "\n"
-        . '    ) ],' . "\n"
-        if length $also_dump;
+        $also_dump
+            = '    -also => [ qw(' . "\n"
+            . '        '
+            . $also_dump . "\n"
+            . '    ) ],' . "\n"
+            if length $also_dump;
 
-    ( my $dist_name = $self->zilla()->name() ) =~ s/-/::/g;
+        ( my $dist_name = $self->zilla()->name() ) =~ s/-/::/g;
 
-    my $content = $self->fill_in_string(
-        $conflicts_module_template,
-        {
-            dist_name      => \$dist_name,
-            module_name    => \( $self->_conflicts_module_name() ),
-            conflicts_dump => \$conflicts_dump,
-            also_dump      => \$also_dump,
-        },
-    );
-
-    return Dist::Zilla::File::InMemory->new(
-        name    => $self->_conflicts_module_path(),
-        content => $content,
-    );
+        return $self->fill_in_string(
+            $conflicts_module_template,
+            {
+                dist_name      => \$dist_name,
+                module_name    => \( $self->_conflicts_module_name() ),
+                conflicts_dump => \$conflicts_dump,
+                also_dump      => \$also_dump,
+            },
+        );
+    }
 }
 
-# If dzil sees this string PODXXXX anywhere in this code it uses that as the
-# name for the module.
-my $podname_hack    = 'POD' . 'NAME';
-my $script_template = <<'EOF';
+{
+    # If dzil sees this string PODXXXX anywhere in this code it uses that as the
+    # name for the module.
+    my $podname_hack    = 'POD' . 'NAME';
+    my $script_template = <<'EOF';
 #!/usr/bin/perl
 
 use strict;
@@ -183,24 +191,21 @@ else {
     exit @conflicts;
 }
 EOF
-$script_template = sprintf( $script_template, $podname_hack );
+    $script_template = sprintf( $script_template, $podname_hack );
 
-sub _build_script {
-    my $self = shift;
+    sub _generate_conflicts_script {
+        my $self = shift;
 
-    ( my $filename = $self->_script() ) =~ s+^.*/++;
-    my $content = $self->fill_in_string(
-        $script_template,
-        {
-            filename    => \$filename,
-            module_name => \( $self->_conflicts_module_name() ),
-        },
-    );
+        ( my $filename = $self->_script() ) =~ s+^.*/++;
 
-    return Dist::Zilla::File::InMemory->new(
-        name    => $self->_script(),
-        content => $content,
-    );
+        return $self->fill_in_string(
+            $script_template,
+            {
+                filename    => \$filename,
+                module_name => \( $self->_conflicts_module_name() ),
+            },
+        );
+    }
 }
 
 # XXX - this should really be a separate phase that runs after InstallTool -
@@ -255,7 +260,8 @@ sub _munge_build_pl {
     return;
 }
 
-my $check_conflicts_template = <<'CC_SUB';
+{
+    my $check_conflicts_template = <<'CC_SUB';
 sub check_conflicts {
     if ( eval { require '{{ $conflicts_module_path }}'; 1; } ) {
         if ( eval { {{ $conflicts_module_name }}->check_conflicts; 1 } ) {
@@ -283,39 +289,40 @@ EOF
 }
 CC_SUB
 
-sub _check_conflicts_sub {
-    my $self = shift;
+    sub _check_conflicts_sub {
+        my $self = shift;
 
-    my $warning;
-    if ( $self->_has_script() ) {
-        ( my $filename = $self->_script() ) =~ s+^.*/++;
-        $warning = <<"EOF";
+        my $warning;
+        if ( $self->_has_script() ) {
+            ( my $filename = $self->_script() ) =~ s+^.*/++;
+            $warning = <<"EOF";
     Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
     hasn't been installed yet. You should check for conflicting modules
     manually using the '$filename' script that is installed with
     this distribution once the installation finishes.
 EOF
-    }
-    else {
-        my $mod = $self->_conflicts_module_name();
-        $warning = <<"EOF";
+        }
+        else {
+            my $mod = $self->_conflicts_module_name();
+            $warning = <<"EOF";
     Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
     hasn't been installed yet. You should check for conflicting modules
     manually by examining the list of conflicts in $mod once the installation
     finishes.
 EOF
+        }
+
+        chomp $warning;
+
+        return $self->fill_in_string(
+            $check_conflicts_template,
+            {
+                conflicts_module_path => \( $self->_conflicts_module_path() ),
+                conflicts_module_name => \( $self->_conflicts_module_name() ),
+                warning               => \$warning,
+            },
+        );
     }
-
-    chomp $warning;
-
-    return $self->fill_in_string(
-        $check_conflicts_template,
-        {
-            conflicts_module_path => \( $self->_conflicts_module_path() ),
-            conflicts_module_name => \( $self->_conflicts_module_name() ),
-            warning               => \$warning,
-        },
-    );
 }
 
 sub metadata {
