@@ -2,6 +2,7 @@ package Dist::Zilla::Plugin::Conflicts;
 
 use strict;
 use warnings;
+use namespace::autoclean;
 
 use Dist::CheckConflicts 0.01 ();
 use Dist::Zilla::File::InMemory;
@@ -332,8 +333,6 @@ sub metadata {
 
     return { x_conflicts => $self->_conflicts() };
 }
-
-no Moose;
 
 __PACKAGE__->meta->make_immutable;
 
