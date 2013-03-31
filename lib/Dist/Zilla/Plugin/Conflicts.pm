@@ -220,9 +220,11 @@ sub setup_installer {
         }
     }
 
-    $self->log_fatal('No Makefile.PL or Build.PL was found. [Conflicts] should appear in dist.ini after [MakeMaker] or [ModuleBuild]!')
-        if not $found_installer;
-    return;
+    return if $found_installer;
+
+    $self->log_fatal( 'No Makefile.PL or Build.PL was found.'
+            . ' [Conflicts] should appear in your dist.ini'
+            . ' after [MakeMaker] or [ModuleBuild]!' );
 }
 
 sub _munge_makefile_pl {
