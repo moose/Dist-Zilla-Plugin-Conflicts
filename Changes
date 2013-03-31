@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.09    2013-03-31
+
 - If the plugin is run before a Makefile.PL or Build.PL can be generated, a
   fatal error is thrown. RT#80271. (Karen Etheridge)
 
