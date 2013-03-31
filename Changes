@@ -1,8 +1,8 @@
 {{$NEXT}}
 
-- a fatal error is now generated if the plugin is run too soon, before
-  Makefile.PL or Build.PL can be generated for receiving the install-time
-  conflicts checking code. (RT#80271, Karen Etheridge)
+- If the plugin is run before a Makefile.PL or Build.PL can be generated, a
+  fatal error is thrown. RT#80271. (Karen Etheridge)
+
 
 0.08    2011-07-22
 
