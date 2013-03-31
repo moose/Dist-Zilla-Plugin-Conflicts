@@ -130,6 +130,8 @@ use Dist::CheckConflicts
 ;
 
 1;
+
+# ABSTRACT: Provide information on conflicts for {{ $dist_name }}
 EOF
 
     sub _generate_conflicts_module {
