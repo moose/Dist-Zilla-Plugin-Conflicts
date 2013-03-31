@@ -3,6 +3,13 @@
 - If the plugin is run before a Makefile.PL or Build.PL can be generated, a
   fatal error is thrown. RT#80271. (Karen Etheridge)
 
+- The files this plugin generates are now added early enough to be seen by any
+  FileMunger plugins. However, the PkgVersion plugin still skips the generated
+  *::Conflicts module because the package name of the generated module is
+  intentionally hidden from PAUSE.
+
+- Added an ABSTRACT to the generated module.
+
 
 0.08    2011-07-22
 
