@@ -337,6 +337,17 @@ sub metadata {
     return { x_breaks => $self->_conflicts() };
 }
 
+=begin Pod::Coverage
+
+  gather_files
+  metadata
+  register_prereqs
+  setup_installer
+
+=end Pod::Coverage
+
+=cut
+
 __PACKAGE__->meta->make_immutable;
 
 1;
