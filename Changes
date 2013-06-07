@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.10    2013-06-07
+
 - The x_conflicts key added to the META.* files has now been renamed to
   x_breaks, per the Lancaster Consensus of 2013
   (https://github.com/Perl-Toolchain-Gang/toolchain-site/blob/master/lancaster-consensus.md).
