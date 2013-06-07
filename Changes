@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- The x_conflicts key added to the META.* files has now been renamed to
+  x_breaks, per the Lancaster Concensus of 2013
+  (https://github.com/Perl-Toolchain-Gang/toolchain-site/blob/master/lancaster-consensus.md).
+
+
 0.09    2013-03-31
 
 - If the plugin is run before a Makefile.PL or Build.PL can be generated, a

@@ -332,7 +332,7 @@ EOF
 sub metadata {
     my $self = shift;
 
-    return { x_conflicts => $self->_conflicts() };
+    return { x_breaks => $self->_conflicts() };
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -370,7 +370,7 @@ Second, it adds code to your F<Makefile.PL> or F<Build.PL> to load the
 generated module and print warnings if conflicts are detected.
 
 Finally, it adds the conflicts to the F<META.json> and/or F<META.yml> files
-under the "x_conflicts" key.
+under the "x_breaks" key.
 
 =head1 USAGE
 
