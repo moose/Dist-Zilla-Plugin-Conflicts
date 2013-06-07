@@ -1,8 +1,13 @@
 {{$NEXT}}
 
 - The x_conflicts key added to the META.* files has now been renamed to
-  x_breaks, per the Lancaster Concensus of 2013
+  x_breaks, per the Lancaster Consensus of 2013
   (https://github.com/Perl-Toolchain-Gang/toolchain-site/blob/master/lancaster-consensus.md).
+
+- The generated check_conflicts sub added to the Makefile.PL or Build.PL file
+  now checks the AUTOMATED_TESTING and NONINTERACTIVE_TESTING env vars to
+  determine whether or not it should sleep for a few seconds so its message
+  can be read. These env vars also come from the Lancaster Consensus.
 
 
 0.09    2013-03-31
