@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- This plugin now adds conflicts type entries to the distro's Meta
+  information, per the CPAN meta spec. Patch by Karen Etheridge. RT #87123.
+
+
 0.10    2013-06-07
 
 - The x_conflicts key added to the META.* files has now been renamed to
