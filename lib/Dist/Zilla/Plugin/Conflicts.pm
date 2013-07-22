@@ -91,6 +91,16 @@ sub register_prereqs {
         { phase => 'runtime' },
         'Dist::CheckConflicts' => '0.02',
     );
+
+    for my $phase (qw( develop runtime )) {
+        $self->zilla->register_prereqs(
+            {
+                phase => $phase,
+                type  => 'conflicts',
+            },
+            %{ $self->_conflicts() },
+        );
+    }
 }
 
 sub gather_files {
