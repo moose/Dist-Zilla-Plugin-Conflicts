@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fix bad conflicts entries added to metaspec (Karen is very sorry!), broken
+  in v0.11.
+
 0.11    2013-07-22
 
 - This plugin now adds conflicts type entries to the distro's Meta
