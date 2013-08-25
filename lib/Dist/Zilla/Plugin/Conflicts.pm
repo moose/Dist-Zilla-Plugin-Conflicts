@@ -138,7 +138,7 @@ EOF
     # This is necessary to avoid confusing toolchain things - for example,
     # MetaCPAN seems to look for this when picking a summary for the recent
     # uploads page.
-    $conflicts_module_template =~ s/TCARTSBA/ABSTRACT/;
+    $conflicts_module_template =~ s/TCARTSBA/'AB' . 'STRACT'/e;
 
     sub _generate_conflicts_module {
         my $self = shift;
