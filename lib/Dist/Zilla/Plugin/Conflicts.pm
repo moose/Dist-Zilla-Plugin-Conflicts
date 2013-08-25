@@ -382,8 +382,8 @@ L<Dist::CheckConflicts>.
 Second, it adds code to your F<Makefile.PL> or F<Build.PL> to load the
 generated module and print warnings if conflicts are detected.
 
-Third, it adds "conflicts" entries to the develop and runtime prereqs, per
-the L<CPAN Meta Spec|https://metacpan.org/module/CPAN::Meta::Spec/Prereq Spec>.
+Third, it adds "conflicts" entries to the develop and runtime prereqs, per the
+L<CPAN Meta Spec|https://metacpan.org/module/CPAN::Meta::Spec#Prereq-Spec>.
 
 Finally, it adds the conflicts to the F<META.json> and/or F<META.yml> files
 under the "x_breaks" key.
