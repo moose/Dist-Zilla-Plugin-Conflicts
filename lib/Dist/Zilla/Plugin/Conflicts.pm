@@ -133,8 +133,12 @@ use Dist::CheckConflicts
 
 1;
 
-# ABSTRACT: Provide information on conflicts for {{ $dist_name }}
+# TCARTSBA: Provide information on conflicts for {{ $dist_name }}
 EOF
+    # This is necessary to avoid confusing toolchain things - for example,
+    # MetaCPAN seems to look for this when picking a summary for the recent
+    # uploads page.
+    $conflicts_module_template =~ s/TCARTSBA/ABSTRACT/;
 
     sub _generate_conflicts_module {
         my $self = shift;
