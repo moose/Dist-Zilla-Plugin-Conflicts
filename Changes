@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+- MetaCPAN was picking up the "# ABSTRACT" line in the conflicts module
+  template.
+
+- Removed some incorrect docs left over from 0.11
+
+
 0.12    2013-08-25
 
 - Fix bad conflicts entries added to metaspec (Karen is very sorry!), broken
