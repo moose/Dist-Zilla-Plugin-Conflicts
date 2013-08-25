@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.12    2013-08-25
+
 - Fix bad conflicts entries added to metaspec (Karen is very sorry!), broken
   in v0.11. Sort of resolves RT #87123.
 
