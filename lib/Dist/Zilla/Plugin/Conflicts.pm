@@ -417,6 +417,24 @@ F<dist.ini> I<after> the plugin which generates your F<Makefile.PL> or
 F<Build.PL>. This is a limitation of L<Dist::Zilla> that will hopefully be
 addressed in a future release.
 
+=head1 SEE ALSO
+
+=over 4
+
+=item *
+
+L<Dist::CheckConflicts>
+
+=item *
+
+L<Dist::Zilla::Plugin::Breaks>
+
+=item *
+
+L<Dist::Zilla::Plugin::Test::CheckBreaks>
+
+=back
+
 =head1 SUPPORT
 
 Please report any bugs or feature requests to
