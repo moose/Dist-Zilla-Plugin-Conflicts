@@ -338,7 +338,12 @@ EOF
 sub metadata {
     my $self = shift;
 
-    return { x_breaks => $self->_conflicts() };
+    my $conflicts = $self->_conflicts;
+    return {
+        x_breaks => {
+            map { $_ => '<= '. $conflicts->{$_} } keys %$conflicts
+        }
+    };
 }
 
 =begin Pod::Coverage

@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- format of x_breaks metadata fixed to properly indicate the problematic
+  version range (Karen Etheridge)
+
 0.13    2013-08-25
 
 - MetaCPAN was picking up the "# ABSTRACT" line in the conflicts module
