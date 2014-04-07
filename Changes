@@ -1,6 +1,6 @@
 {{$NEXT}}
 
-0.13001 2014-04-06
+0.13001 2014-04-06 (TRIAL RELEASE)
 
 - format of x_breaks metadata fixed to properly indicate the problematic
   version range (Karen Etheridge)
