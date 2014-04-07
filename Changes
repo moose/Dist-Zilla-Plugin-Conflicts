@@ -1,9 +1,13 @@
 {{$NEXT}}
 
+- Same as 0.13001
+
+
 0.13001 2014-04-06 (TRIAL RELEASE)
 
-- format of x_breaks metadata fixed to properly indicate the problematic
-  version range (Karen Etheridge)
+- Fixed the x_breaks metadata to properly indicate the problematic version
+  range. Patch by Karen Etheridge. RT #94467.
+
 
 0.13    2013-08-25
 
