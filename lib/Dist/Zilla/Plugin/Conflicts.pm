@@ -123,6 +123,8 @@ package # hide from PAUSE
 use strict;
 use warnings;
 
+# this module was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
+
 use Dist::CheckConflicts
     -dist      => '{{ $dist_name }}',
     -conflicts => {
@@ -164,6 +166,7 @@ EOF
         return $self->fill_in_string(
             $conflicts_module_template,
             {
+                plugin         => \$self,
                 dist_name      => \$dist_name,
                 module_name    => \( $self->_conflicts_module_name() ),
                 conflicts_dump => \$conflicts_dump,
@@ -183,6 +186,8 @@ EOF
 use strict;
 use warnings;
 # %s: {{ $filename }}
+
+# this script was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
 
 use Getopt::Long;
 use {{ $module_name }};
@@ -209,6 +214,7 @@ EOF
         return $self->fill_in_string(
             $script_template,
             {
+                plugin      => \$self,
                 filename    => \$filename,
                 module_name => \( $self->_conflicts_module_name() ),
             },
