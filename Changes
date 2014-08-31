@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- generate Conflicts module as a FromCode file, so its content is not
+  calculated until prereqs are available: restores the -also section lost
+  in version 0.09 (Karen Etheridge)
+
+
 0.14    2014-04-06
 
 - Same as 0.13001
