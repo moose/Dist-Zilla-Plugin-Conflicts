@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::Conflicts - Declare conflicts for your distro
 
 # VERSION
 
-version 0.14
+version 0.15
 
 # SYNOPSIS
 

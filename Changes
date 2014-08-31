@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.15    2014-08-31
+
 - Generate the Conflicts module as a FromCode file, so its content is not
   calculated until after prereqs are available: restores the -also section
   lost in version 0.09. Patch by Karen Etheridge. GitHub PR #2.
