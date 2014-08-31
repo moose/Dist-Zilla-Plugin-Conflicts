@@ -99,8 +99,8 @@ sub gather_files {
 
     $self->add_file(
         Dist::Zilla::File::FromCode->new(
-            name    => $self->_conflicts_module_path(),
-            code    => sub { $self->_generate_conflicts_module },
+            name => $self->_conflicts_module_path(),
+            code => sub { $self->_generate_conflicts_module },
         )
     );
 
