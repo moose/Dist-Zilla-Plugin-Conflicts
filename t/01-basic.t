@@ -17,6 +17,7 @@ my $tzil = Builder->from_config(
                 [ GatherDir => ],
                 [ MakeMaker => ],
                 [ ExecDir => ],
+                [ Prereqs => { 'Foo' => '0' } ],
                 [ 'Conflicts' => { -script => 'script/dzt-conflicts', 'Module::X' => '0.02' } ],
             ),
             path(qw(source lib DZT Sample.pm)) => "package DZT::Sample;\n1;\n",
@@ -44,6 +45,7 @@ cmp_deeply(
             runtime => {
                 requires => {
                     'Dist::CheckConflicts' => '0.02',
+                    'Foo' => '0',
                 },
             },
         },
@@ -71,6 +73,10 @@ use Dist::CheckConflicts
     -conflicts => {
         'Module::X' => '0.02',
     },
+    -also => [ qw(
+        Dist::CheckConflicts
+        Foo
+    ) ],
 
 ;
 

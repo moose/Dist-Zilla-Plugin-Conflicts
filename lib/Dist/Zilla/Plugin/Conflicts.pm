@@ -7,6 +7,7 @@ use namespace::autoclean;
 use Dist::CheckConflicts 0.02 ();
 use Dist::Zilla 4.0 ();
 use Dist::Zilla::File::InMemory;
+use Dist::Zilla::File::FromCode;
 use Moose::Autobox 0.09;
 
 use Moose;
@@ -97,9 +98,9 @@ sub gather_files {
     my $self = shift;
 
     $self->add_file(
-        Dist::Zilla::File::InMemory->new(
+        Dist::Zilla::File::FromCode->new(
             name    => $self->_conflicts_module_path(),
-            content => $self->_generate_conflicts_module(),
+            code    => sub { $self->_generate_conflicts_module },
         )
     );
 
