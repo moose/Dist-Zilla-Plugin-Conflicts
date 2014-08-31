@@ -140,9 +140,12 @@ is( $script_content, $expected_script_content, 'script content looks good' )
 {
     my $wd = pushd $build_dir;
 
-    push @ARGV, '--verbose';    # avoid the exit code path
-    do $script_filename;
-    ok( !$@, 'ran script successfully' ) or diag $@;
+    my @cmd = ( $^X, '-Ilib', $script_filename );
+    is(
+        system(@cmd),
+        0,
+        "no error running @cmd"
+    );
 }
 
 done_testing;
