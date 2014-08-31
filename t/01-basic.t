@@ -6,6 +6,7 @@ use Path::Tiny;
 
 use Test::DZil;
 use Test::Deep;
+use Test::Differences;
 use Test::Fatal;
 use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
@@ -74,12 +75,16 @@ unlike(
     'no trailing whitespace in generated module'
 );
 
-my $expected_module_content = <<'MODULE_CONTENT';
+my $version = Dist::Zilla::Plugin::Conflicts->VERSION() || '<self>';
+
+my $expected_module_content = <<"MODULE_CONTENT";
 package # hide from PAUSE
     DZT::Sample::Conflicts;
 
 use strict;
 use warnings;
+
+# this module was generated with Dist::Zilla::Plugin::Conflicts $version
 
 use Dist::CheckConflicts
     -dist      => 'DZT::Sample',
@@ -98,8 +103,11 @@ use Dist::CheckConflicts
 # ABSTRACT: Provide information on conflicts for DZT::Sample
 MODULE_CONTENT
 
-is( $module_content, $expected_module_content, 'module content looks good' )
-    or diag 'got module content:', "\n", $module_content;
+eq_or_diff(
+    $module_content,
+    $expected_module_content,
+    'module content looks good'
+);
 
 my $script_filename = $build_dir->child(qw( script dzt-conflicts ));
 ok( -e $script_filename, 'conflicts script created' );
@@ -111,31 +119,36 @@ unlike(
     'no trailing whitespace in generated script'
 );
 
-my $expected_script_content = <<'SCRIPT_CONTENT';
+my $expected_script_content = <<"SCRIPT_CONTENT";
 #!/usr/bin/perl
 
 use strict;
 use warnings;
 # PODNAME: dzt-conflicts
 
+# this script was generated with Dist::Zilla::Plugin::Conflicts $version
+
 use Getopt::Long;
 use DZT::Sample::Conflicts;
 
-my $verbose;
-GetOptions( 'verbose|v' => \$verbose );
+my \$verbose;
+GetOptions( 'verbose|v' => \\\$verbose );
 
-if ($verbose) {
+if (\$verbose) {
     DZT::Sample::Conflicts->check_conflicts;
 }
 else {
-    my @conflicts = DZT::Sample::Conflicts->calculate_conflicts;
-    print "$_\n" for map { $_->{package} } @conflicts;
-    exit @conflicts;
+    my \@conflicts = DZT::Sample::Conflicts->calculate_conflicts;
+    print "\$_\\n" for map { \$_->{package} } \@conflicts;
+    exit \@conflicts;
 }
 SCRIPT_CONTENT
 
-is( $script_content, $expected_script_content, 'script content looks good' )
-    or diag 'got script content:', "\n", $script_content;
+eq_or_diff(
+    $script_content,
+    $expected_script_content,
+    'script content looks good'
+);
 
 {
     my $wd = pushd $build_dir;
