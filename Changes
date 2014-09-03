@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Add a hint for [SurgicalPodWeaver] so it does not try to modify the file (no
+  longer possible since version 0.15). Patch by Karen Etheridge. GitHub PR #2.
+
+
 0.15    2014-08-31
 
 - Generate the Conflicts module as a FromCode file, so its content is not
