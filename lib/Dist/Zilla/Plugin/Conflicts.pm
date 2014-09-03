@@ -137,6 +137,7 @@ use Dist::CheckConflicts
 1;
 
 # TCARTSBA: Provide information on conflicts for {{ $dist_name }}
+# Dist::Zilla: -PodWeaver
 EOF
     # This is necessary to avoid confusing toolchain things - for example,
     # MetaCPAN seems to look for this when picking a summary for the recent

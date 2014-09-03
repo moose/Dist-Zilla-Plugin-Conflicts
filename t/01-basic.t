@@ -101,6 +101,7 @@ use Dist::CheckConflicts
 1;
 
 # ABSTRACT: Provide information on conflicts for DZT::Sample
+# Dist::Zilla: -PodWeaver
 MODULE_CONTENT
 
 eq_or_diff(
