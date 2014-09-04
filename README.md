@@ -1,11 +1,3 @@
-# NAME
-
-Dist::Zilla::Plugin::Conflicts - Declare conflicts for your distro
-
-# VERSION
-
-version 0.15
-
 # SYNOPSIS
 
 In your `dist.ini`:
@@ -92,15 +84,3 @@ on free software full time, which seems unlikely at best.
 
 To donate, log into PayPal and send money to autarch@urth.org or use the
 button on this page: [http://www.urth.org/~autarch/fs-donation.html](http://www.urth.org/~autarch/fs-donation.html)
-
-# AUTHOR
-
-Dave Rolsky <autarch@urth.org>
-
-# COPYRIGHT AND LICENSE
-
-This software is Copyright (c) 2014 by Dave Rolsky.
-
-This is free software, licensed under:
-
-    The Artistic License 2.0 (GPL Compatible)
