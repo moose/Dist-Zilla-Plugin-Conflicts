@@ -8,7 +8,6 @@ use Dist::CheckConflicts 0.02 ();
 use Dist::Zilla 4.0 ();
 use Dist::Zilla::File::InMemory;
 use Dist::Zilla::File::FromCode;
-use Moose::Autobox 0.09;
 
 use Moose;
 
@@ -230,7 +229,7 @@ sub setup_installer {
     my $self = shift;
 
     my $found_installer;
-    for my $file ( $self->zilla()->files()->flatten() ) {
+    for my $file (@{ $self->zilla()->files() }) {
         if ( $file->name() =~ /Makefile\.PL$/ ) {
             $self->_munge_makefile_pl($file);
             $found_installer++;
