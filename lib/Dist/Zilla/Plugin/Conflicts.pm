@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 
 use Dist::CheckConflicts 0.02 ();
-use Dist::Zilla 4.0 ();
+use Dist::Zilla 4.0           ();
 use Dist::Zilla::File::InMemory;
 use Dist::Zilla::File::FromCode;
 
@@ -138,6 +138,7 @@ use Dist::CheckConflicts
 # TCARTSBA: Provide information on conflicts for {{ $dist_name }}
 # Dist::Zilla: -PodWeaver
 EOF
+
     # This is necessary to avoid confusing toolchain things - for example,
     # MetaCPAN seems to look for this when picking a summary for the recent
     # uploads page.
@@ -346,11 +347,8 @@ sub metadata {
     my $self = shift;
 
     my $conflicts = $self->_conflicts;
-    return {
-        x_breaks => {
-            map { $_ => '<= '. $conflicts->{$_} } keys %$conflicts
-        }
-    };
+    return { x_breaks =>
+            { map { $_ => '<= ' . $conflicts->{$_} } keys %$conflicts } };
 }
 
 =begin Pod::Coverage

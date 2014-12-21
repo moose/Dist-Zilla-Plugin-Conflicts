@@ -10,7 +10,6 @@ use Test::DZil;
 use Test::Fatal;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 
-
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
@@ -46,6 +45,9 @@ my $module_filename = $build_dir->child(qw( lib DZT Sample Conflicts.pm ));
 ok( -e $module_filename, 'conflicts module created' );
 
 my $module_content = $module_filename->slurp_utf8();
-unlike( $module_content, qr/=(pod|head)/, 'no pod was added to conflicts module' );
+unlike(
+    $module_content, qr/=(pod|head)/,
+    'no pod was added to conflicts module'
+);
 
 done_testing;
