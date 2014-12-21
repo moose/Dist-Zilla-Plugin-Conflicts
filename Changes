@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Removed the use of autobox, following Dist::Zilla's lead. Patch by Karen
+  Etheridge. GitHub PR #4.
+
+
 0.16    2014-09-03
 
 - Add a hint for [SurgicalPodWeaver] so it does not try to modify the file (no
