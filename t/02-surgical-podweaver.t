@@ -4,7 +4,6 @@ use warnings;
 use Test::More;
 use Test::Requires 'Dist::Zilla::Plugin::SurgicalPodWeaver';
 
-use File::pushd qw( pushd );
 use Path::Tiny;
 use Test::DZil;
 use Test::Fatal;
