@@ -47,21 +47,23 @@ has _conflicts_module_path => (
     builder  => '_build_conflicts_module_path',
 );
 
-sub BUILDARGS {
+around BUILDARGS => sub {
+    my $orig = shift;
     my $class = shift;
-    my %args = ref $_[0] ? %{ $_[0] } : @_;
 
-    my $zilla = delete $args{zilla};
-    my $name  = delete $args{plugin_name};
-    my $bin   = delete $args{'-script'};
+    my $args = $class->$orig(@_);
+
+    my $zilla = delete $args->{zilla};
+    my $name  = delete $args->{plugin_name};
+    my $bin   = delete $args->{'-script'};
 
     return {
         zilla       => $zilla,
         plugin_name => $name,
         ( defined $bin ? ( _script => $bin ) : () ),
-        _conflicts => \%args,
+        _conflicts => $args,
     };
-}
+};
 
 sub _build_conflicts_module_name {
     my $self = shift;
