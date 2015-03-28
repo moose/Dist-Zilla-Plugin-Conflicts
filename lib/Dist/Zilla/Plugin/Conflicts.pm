@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::Conflicts;
+# ABSTRACT: Declare conflicts for your distro
 
 use strict;
 use warnings;
@@ -137,14 +138,14 @@ use Dist::CheckConflicts
 
 1;
 
-# TCARTSBA: Provide information on conflicts for {{ $dist_name }}
-# Dist::Zilla: -PodWeaver
 EOF
 
-    # This is necessary to avoid confusing toolchain things - for example,
-    # MetaCPAN seems to look for this when picking a summary for the recent
-    # uploads page.
-    $conflicts_module_template =~ s/TCARTSBA/'AB' . 'STRACT'/e;
+    # Avoid false positives in toolchain things -- e.g. [SurgicalPodWeaver],
+    # and MetaCPAN seems to look for this when picking a summary for the
+    # recent uploads page.
+    $conflicts_module_template .=
+        '# ABST' . 'RACT: Provide information on conflicts for {{ $dist_name }}' . "\n"
+        . '# Dist::Zilla: -' . 'PodWeaver' . "\n";
 
     sub _generate_conflicts_module {
         my $self = shift;
@@ -365,12 +366,10 @@ sub metadata {
 =cut
 
 __PACKAGE__->meta->make_immutable;
-
 1;
-
-# ABSTRACT: Declare conflicts for your distro
-
 __END__
+
+=pod
 
 =head1 SYNOPSIS
 
