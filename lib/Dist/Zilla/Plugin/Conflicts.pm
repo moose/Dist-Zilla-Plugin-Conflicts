@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
+our $VERSION = '0.18';
+
 use Dist::CheckConflicts 0.02 ();
 use Dist::Zilla 4.0           ();
 use Dist::Zilla::File::InMemory;
