@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::Conflicts;
+
 # ABSTRACT: Declare conflicts for your distro
 
 use strict;
@@ -51,7 +52,7 @@ has _conflicts_module_path => (
 );
 
 around BUILDARGS => sub {
-    my $orig = shift;
+    my $orig  = shift;
     my $class = shift;
 
     my $args = $class->$orig(@_);
@@ -145,9 +146,11 @@ EOF
     # Avoid false positives in toolchain things -- e.g. [SurgicalPodWeaver],
     # and MetaCPAN seems to look for this when picking a summary for the
     # recent uploads page.
-    $conflicts_module_template .=
-        '# ABST' . 'RACT: Provide information on conflicts for {{ $dist_name }}' . "\n"
-        . '# Dist::Zilla: -' . 'PodWeaver' . "\n";
+    $conflicts_module_template
+        .= '# ABST'
+        . 'RACT: Provide information on conflicts for {{ $dist_name }}' . "\n"
+        . '# Dist::Zilla: -'
+        . 'PodWeaver' . "\n";
 
     sub _generate_conflicts_module {
         my $self = shift;
@@ -163,7 +166,7 @@ EOF
 
         $also_dump
             = '    -also => [ qw(' . "\n"
-            . '        '
+            . q{        }
             . $also_dump . "\n"
             . '    ) ],' . "\n"
             if length $also_dump;
@@ -216,7 +219,7 @@ EOF
     sub _generate_conflicts_script {
         my $self = shift;
 
-        ( my $filename = $self->_script() ) =~ s+^.*/++;
+        ( my $filename = $self->_script() ) =~ s{^.*/}{};
 
         return $self->fill_in_string(
             $script_template,
@@ -317,7 +320,7 @@ CC_SUB
 
         my $warning;
         if ( $self->_has_script() ) {
-            ( my $filename = $self->_script() ) =~ s+^.*/++;
+            ( my $filename = $self->_script() ) =~ s{^.*/}{};
             $warning = <<"EOF";
     Your toolchain doesn't support configure_requires, so Dist::CheckConflicts
     hasn't been installed yet. You should check for conflicting modules
