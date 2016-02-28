@@ -376,6 +376,10 @@ __END__
 
 =pod
 
+=head1 NAME
+
+Dist::Zilla::Plugin::Conflicts - Declare conflicts for your distro.
+
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
