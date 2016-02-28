@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 use Dist::CheckConflicts 0.02 ();
 use Dist::Zilla 4.0           ();
