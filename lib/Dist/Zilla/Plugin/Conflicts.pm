@@ -1,7 +1,5 @@
 package Dist::Zilla::Plugin::Conflicts;
 
-# ABSTRACT: Declare conflicts for your distro
-
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -371,7 +369,11 @@ sub metadata {
 =cut
 
 __PACKAGE__->meta->make_immutable;
+
 1;
+
+# ABSTRACT: Declare conflicts for your distro
+
 __END__
 
 =pod
