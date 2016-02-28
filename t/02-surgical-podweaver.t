@@ -14,15 +14,11 @@ my $tzil = Builder->from_config(
     {
         add_files => {
             path(qw( source dist.ini )) => simple_ini(
-                [ GatherDir => ],
-                [ MakeMaker => ],
-                [ ExecDir   => ],
-                [ Prereqs   => { 'Foo' => '0' } ],
-                [
-                    'Conflicts' => {
-                        'Module::X' => '0.02'
-                    }
-                ],
+                [ GatherDir         => ],
+                [ MakeMaker         => ],
+                [ ExecDir           => ],
+                [ Prereqs           => { 'Foo' => '0' } ],
+                [ 'Conflicts'       => { 'Module::X' => '0.02' } ],
                 [ SurgicalPodWeaver => ],
             ),
             path(qw( source lib DZT Sample.pm )) =>
