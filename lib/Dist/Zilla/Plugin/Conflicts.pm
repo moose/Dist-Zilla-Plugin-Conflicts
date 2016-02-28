@@ -357,17 +357,6 @@ sub metadata {
             { map { $_ => '<= ' . $conflicts->{$_} } keys %$conflicts } };
 }
 
-=begin Pod::Coverage
-
-  gather_files
-  metadata
-  register_prereqs
-  setup_installer
-
-=end Pod::Coverage
-
-=cut
-
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -377,6 +366,15 @@ __PACKAGE__->meta->make_immutable;
 __END__
 
 =pod
+
+=begin Pod::Coverage
+
+  gather_files
+  metadata
+  register_prereqs
+  setup_installer
+
+=end Pod::Coverage
 
 =head1 SYNOPSIS
 
