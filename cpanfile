@@ -36,6 +36,7 @@ on 'configure' => sub {
 
 on 'develop' => sub {
   requires "Code::TidyAll" => "0.24";
+  requires "Dist::Zilla::Plugin::SurgicalPodWeaver" => "0";
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
@@ -55,4 +56,5 @@ on 'develop' => sub {
   requires "Test::Pod::No404s" => "0";
   requires "Test::Spelling" => "0.12";
   requires "Test::Version" => "1";
+  requires "Test::Warnings" => "0";
 };
