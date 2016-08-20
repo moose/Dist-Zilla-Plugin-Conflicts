@@ -80,7 +80,7 @@ sub _build_conflicts_module_path {
 
     my $path = join '/', split /-/, $self->zilla()->name();
 
-    return "./lib/$path/Conflicts.pm";
+    return "lib/$path/Conflicts.pm";
 }
 
 sub register_prereqs {
@@ -285,7 +285,7 @@ sub _munge_build_pl {
 {
     my $check_conflicts_template = <<'CC_SUB';
 sub check_conflicts {
-    if ( eval { require '{{ $conflicts_module_path }}'; 1; } ) {
+    if ( eval { require './{{ $conflicts_module_path }}'; 1; } ) {
         if ( eval { {{ $conflicts_module_name }}->check_conflicts; 1 } ) {
             return;
         }
