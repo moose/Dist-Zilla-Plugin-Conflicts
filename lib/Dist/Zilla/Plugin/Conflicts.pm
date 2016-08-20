@@ -80,7 +80,7 @@ sub _build_conflicts_module_path {
 
     my $path = join '/', split /-/, $self->zilla()->name();
 
-    return "lib/$path/Conflicts.pm";
+    return "./lib/$path/Conflicts.pm";
 }
 
 sub register_prereqs {
