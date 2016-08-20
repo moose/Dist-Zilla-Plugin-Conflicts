@@ -156,7 +156,7 @@ EOF
         my $conflicts = $self->_conflicts();
 
         my $conflicts_dump = join ",\n        ",
-            map { qq['$_' => '$conflicts->{$_}'] } sort keys %{$conflicts};
+            map {qq['$_' => '$conflicts->{$_}']} sort keys %{$conflicts};
 
         my $also_dump = join "\n        ", sort grep { $_ ne 'perl' }
             map { $_->required_modules() }
