@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.19    2016-08-20
+
 - Don't rely on '.' being in the current @INC in the code added to a distro's
   Makefile.PL or Build.PL. Reported by Graham Knop. GitHub #7.
 
