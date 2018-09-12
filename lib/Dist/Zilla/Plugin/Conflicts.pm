@@ -127,7 +127,11 @@ package # hide from PAUSE
 use strict;
 use warnings;
 
-# this module was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
+=for *EVERYTHING*
+
+this module was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
+
+=cut
 
 use Dist::CheckConflicts
     -dist      => '{{ $dist_name }}',
