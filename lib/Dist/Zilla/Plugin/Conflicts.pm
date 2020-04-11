@@ -123,6 +123,7 @@ sub gather_files {
     my $conflicts_module_template = <<'EOF';
 package # hide from PAUSE
     {{ $module_name }};
+# ABSTRACT: check for conflicts with {{ $dist_name }}
 
 use strict;
 use warnings;
