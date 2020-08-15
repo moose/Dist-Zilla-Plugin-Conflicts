@@ -80,6 +80,7 @@ my $version = Dist::Zilla::Plugin::Conflicts->VERSION() || '<self>';
 my $expected_module_content = <<"MODULE_CONTENT";
 package # hide from PAUSE
     DZT::Sample::Conflicts;
+# ABSTRACT: check for conflicts with DZT::Sample
 
 use strict;
 use warnings;
