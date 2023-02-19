@@ -48,7 +48,7 @@ cmp_deeply(
                 configure => {
                     requires => {
                         'Dist::CheckConflicts' => '0.02',
-                        'ExtUtils::MakeMaker' =>
+                        'ExtUtils::MakeMaker'  =>
                             ignore,    # added by [MakeMaker]
                     }
                 },

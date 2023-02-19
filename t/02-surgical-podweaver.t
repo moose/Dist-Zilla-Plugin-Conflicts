@@ -17,7 +17,7 @@ my $tzil = Builder->from_config(
                 [ GatherDir         => ],
                 [ MakeMaker         => ],
                 [ ExecDir           => ],
-                [ Prereqs           => { 'Foo' => '0' } ],
+                [ Prereqs           => { 'Foo'       => '0' } ],
                 [ 'Conflicts'       => { 'Module::X' => '0.02' } ],
                 [ SurgicalPodWeaver => ],
             ),
