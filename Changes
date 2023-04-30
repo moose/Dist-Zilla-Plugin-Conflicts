@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.20    2023-04-30
+
 - Add some minimal pod to the generated conflicts module. This includes a
   comment to disable Pod coverage testing if you're using
   Pod::Coverage::TrustPod. Based on suggestion from greencoloured in GH #9.
